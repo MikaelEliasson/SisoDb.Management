@@ -58,7 +58,7 @@ Configuration.AddTypeMapping<TImplementation>(); if you store the implementation
 Example of app start code:
 
 ```csharp
-Configuration.DB = YourSisoDatabase:ISisoDatabase;
+Configuration.DB = YourSisoDatabase;
 
 Configuration.AddTypeMapping<IFeedbackItem, FeedbackItem>();
 Configuration.AddTypeMapping<IComment, Comment>();
@@ -67,7 +67,6 @@ Configuration.Authorize = actionname => CheckIfUserHasAccess(actionname);
 
 Configuration.Init();
 ```
-
 ##Start using it
 Got to yoursite.com/siso-db-management/page
 
