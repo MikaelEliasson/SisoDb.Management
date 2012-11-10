@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SisoDb.Management")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A SisoDb management tool for your asp.net websites. The tool is hosted on the website and will accessible from everywhere if the user is given permission.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Mikael Eliasson")]
 [assembly: AssemblyProduct("SisoDb.Management")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Mikael Eliasson</authors>
+    <owners>Mikael Eliasson</owners>
+    <projectUrl>https://github.com/MikaelEliasson/SisoDb.Management</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A SisoDb management tool for your asp.net websites. The tool is hosted on the website and will accessible from everywhere if the user is given permission.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>c# aspnet aspnetmvc sisodb tools</tags>
+	<dependencies>
+		<dependency id="Mono.CSharp" version="4.0" />
+        <dependency id="SisoDb" version="15.1.0" />
+    </dependencies>
+  </metadata>
+</package>
