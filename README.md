@@ -19,11 +19,37 @@ SisoDb.Management in it's current form only runs in a asp.net website. It does t
 
 Right now it's only tested in Firefox and Chrome. IE9 will probably work but the layout might be messed up. IE10 should be supported in a comming release.
 
+If you want to see a sample of how it works there is a project called "TestApplication" in the solution. Set that as startup project and run it. It automatically creates some test data on app start. Navigate to localhost:someport/siso-db-management/page and start testing
+
 ## Installing
 TBD
 
 ##Configuration
-TBD
+
+You need to add some configuration to your applications startup. For example to Application_Start() in global.asax.cs.
+
+You must set/call the following things:
+- Configuration.DB: Your Siso database. Remember this should be long lived
+- Configuration.Authorize: Func<string, bool> that gives you the name of the current action and should return if the user is allowed to do it. Typically you check if the user is Admin and then return true
+- Configuration.Init() Initiates the routes for the HttpHandler. Might do more in the future so should be called
+
+You should also add all the types you want to be accessible from the administration. Use
+Configuration.AddTypeMapping<TContract, TImplementation>(); if you store the entity as an interface
+or 
+Configuration.AddTypeMapping<TImplementation>(); if you store the implementation.
+
+Example of app start code:
+
+```c#
+Configuration.DB = YourSisoDatabase:ISisoDatabase;
+
+Configuration.AddTypeMapping<IFeedbackItem, FeedbackItem>();
+Configuration.AddTypeMapping<IComment, Comment>();
+
+Configuration.Authorize = actionname => CheckIfUserHasAccess(actionname);
+
+Configuration.Init();
+```
 
 ##Start using it
 Got to yoursite.com/siso-db-management/page
