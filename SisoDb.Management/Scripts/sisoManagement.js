@@ -54,6 +54,11 @@ sisodb.management = (function () {
     var buildTabEvents = function (tab) {
         tab.query = function () {
             //ErrorHandling
+            tab.page(0);
+            tab.loadData();
+        };
+
+        tab.loadData = function () {
             tab.isLoading(true);
             tab.results([]);
             tab.resultCount(0);
@@ -67,7 +72,7 @@ sisodb.management = (function () {
                     orderby: this.sortBy(),
                     sortorder: this.sortOrder(),
                     pagesize: this.pageSize(),
-                    page : this.page()
+                    page: this.page()
                 },
                 success: function (json) {
                     buildResultList(tab, json);
@@ -80,7 +85,7 @@ sisodb.management = (function () {
         tab.changePage = function () {
             tab.page(this.index);
 
-            tab.query();
+            tab.loadData();
         }
 
         tab.deleteByQuery = function () {
