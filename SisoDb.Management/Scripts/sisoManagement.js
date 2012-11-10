@@ -179,7 +179,6 @@ sisodb.management = (function () {
                     tab.message({
                         type: 'information', text: 'Item updated!', onClose: function () {
                             tab.message(null);
-                            tab.close();
                         }
                     });
                 },
