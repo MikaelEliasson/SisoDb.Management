@@ -57,7 +57,7 @@ Configuration.AddTypeMapping<TImplementation>(); if you store the implementation
 
 Example of app start code:
 
-```c#
+```csharp
 Configuration.DB = YourSisoDatabase:ISisoDatabase;
 
 Configuration.AddTypeMapping<IFeedbackItem, FeedbackItem>();
