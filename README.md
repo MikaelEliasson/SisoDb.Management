@@ -22,8 +22,25 @@ Right now it's only tested in Firefox and Chrome. IE9 will probably work but the
 If you want to see a sample of how it works there is a project called "TestApplication" in the solution. Set that as startup project and run it. It automatically creates some test data on app start. Navigate to localhost:someport/siso-db-management/page and start testing
 
 ## Installing
+
+### The easy way : Use Nuget
 TBD
 
+### The harder way : Download the code, build it and add the reference manually
+
+1) Download the code
+2) Build SisoDb.Management in Release mode
+3) Copy the .dll files found in bin/Release to your project
+4) Reference what you need (You might already use a few of these). 
+
+You will almost certainly have to add the following to web.config
+```xml
+<system.webServer>
+    <handlers>
+      <add name="SisoDbManagement" path="siso-db-management/*" verb="*" type="System.Web.Routing.UrlRoutingModule" resourceType="Unspecified" preCondition="integratedMode"/>
+    </handlers>
+</system.webServer>
+```
 ##Configuration
 
 You need to add some configuration to your applications startup. For example to Application_Start() in global.asax.cs.
