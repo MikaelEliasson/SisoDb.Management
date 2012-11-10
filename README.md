@@ -24,7 +24,8 @@ If you want to see a sample of how it works there is a project called "TestAppli
 ## Installing
 
 ### The easy way : Use Nuget
-TBD
+
+PM> Install-Package SisoDb.Management
 
 ### The harder way : Download the code, build it and add the reference manually
 
