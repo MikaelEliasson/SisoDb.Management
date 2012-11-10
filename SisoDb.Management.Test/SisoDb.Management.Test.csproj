@@ -67,6 +67,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AuthorizeTest.cs" />
     <Compile Include="DeleteByQueryTest.cs" />
     <Compile Include="DeleteTest.cs" />
     <Compile Include="Entities\IPerson.cs" />
