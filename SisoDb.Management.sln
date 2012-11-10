@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisoDb.Management", "SisoDb.Management\SisoDb.Management.csproj", "{C0378E40-F4BC-45E4-97B3-6C2406D71EB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SisoDb.Management.Test", "SisoDb.Management.Test\SisoDb.Management.Test.csproj", "{D4DACEBF-FF8F-45D7-AB80-F498A8700F47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "TestApplication\TestApplication.csproj", "{1C86FE44-3109-4B5F-B87A-A165546557B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C86FE44-3109-4B5F-B87A-A165546557B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C86FE44-3109-4B5F-B87A-A165546557B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C86FE44-3109-4B5F-B87A-A165546557B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C86FE44-3109-4B5F-B87A-A165546557B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0378E40-F4BC-45E4-97B3-6C2406D71EB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0378E40-F4BC-45E4-97B3-6C2406D71EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0378E40-F4BC-45E4-97B3-6C2406D71EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0378E40-F4BC-45E4-97B3-6C2406D71EB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4DACEBF-FF8F-45D7-AB80-F498A8700F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4DACEBF-FF8F-45D7-AB80-F498A8700F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4DACEBF-FF8F-45D7-AB80-F498A8700F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4DACEBF-FF8F-45D7-AB80-F498A8700F47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

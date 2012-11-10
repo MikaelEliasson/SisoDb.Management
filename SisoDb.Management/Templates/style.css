@@ -1,0 +1,432 @@
+﻿body {
+    padding: 0px;
+    margin: 0px;
+    font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+    background-color: #333;
+}
+
+ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+
+a, a:link, a:visited {
+    color: #d12aa5;
+}
+
+
+hgroup > h1, hgroup > h2 {
+    display: inline-block;
+}
+
+hgroup#title > h1, hgroup#title > h2 {
+    margin: 2px 0;
+}
+
+h2 {
+    color: #d12aa5;
+    font-weight: normal;
+    font-size: 22px;
+}
+
+h1 {
+    color: #5a3f53;
+    font-weight: normal;
+    font-size: 28px;
+}
+
+.pageHeader {
+    padding-bottom: 30px;
+    background-color: #fff;
+    padding: 0px 10px;
+}
+
+.pageFooter {
+    margin-top: 50px;
+    text-align: center;
+    color: #808080;
+    padding: 0px 10px;
+}
+
+.page {
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    background-color: #fff;
+    width: 100%;
+    padding: 0px 10px 50px;
+}
+
+
+#workArea {
+    flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    position: relative;
+}
+
+.overlay {
+    background-color: rgba(255, 255, 255, 0.66);
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#entityContainer {
+    width: 200px;
+    margin-right: 50px;
+}
+
+.entityList {
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.entity {
+    cursor: pointer;
+    margin-bottom: 4px;
+}
+
+    .entity > h2 {
+        font-size: 12px;
+        margin: 0px;
+    }
+    
+    .entity > h2:hover, .entity > h2:focus {
+        background-color: #d12aa5;
+        color: #fff;
+    }
+
+fieldset {
+    padding: 0px;
+    border: none;
+}
+
+    fieldset > legend {
+        display: none;
+    }
+
+    fieldset > h1 {
+        color: #d12aa5;
+        font-size: 22px;
+        margin: 0 0 10px 0;
+    }
+
+.fieldSetFields {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    display: table;
+    width: 100%;
+}
+
+    .fieldSetFields > li {
+        display: table-row;
+    }
+
+        .fieldSetFields > li > div {
+            display: table-cell;
+            vertical-align: top;
+        }
+
+            .fieldSetFields > li > div.label {
+                padding-right: 10px;
+                width: 200px;
+            }
+
+.extraInfo {
+    font-size: 11px;
+    color: #808080;
+    display: block;
+}
+
+textarea {
+    resize: vertical;
+    width: 95%;
+    border: solid 1px #d12aa5;
+    font-size: 12px;
+    color: #333;
+    height: 27px;
+    padding: 0 0 0 2px;
+}
+
+textarea.large {
+    height: 250px;
+}
+
+input, select {
+    border: solid 1px #d12aa5;
+    font-size: 12px;
+    color: #333;
+    margin: 0 5px 0 0px;
+    padding: 0 0 0 2px;
+    height: 27px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+select {
+    height: 29px;
+}
+
+.buttons {
+    margin: 10px 0px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #d12aa5;
+    color: #fff !important;
+    padding: 6px 12px;
+    text-transform: uppercase;
+    margin: 2px 4px 2px 0px;
+}
+
+    .btn:hover, .btn:focus {
+        background-color: #333;
+    }
+
+.resultTable {
+    border-collapse: collapse;
+}
+
+        .resultTable > thead > tr > th {
+            background-color: #333;
+            color: #fff;
+            border-bottom-color: #999;
+        }
+        
+        .resultTable > tbody > tr > td {
+            border: solid 1px #b990ae;
+            padding: 4px;
+            font-size: 11px;
+            vertical-align: top;
+        }
+        
+        .resultTable > tbody > tr:hover > td {
+            background-color: #fefefe;
+        }
+
+.propertyList > li {
+    display: inline-block;
+    font-size: 12px;
+}
+
+.propertyList > li:after {
+    content : ",";
+}
+
+#toolbar {
+    padding-top: 10px;
+}
+
+.tab {
+    display: inline-block;
+    margin-right: 25px;
+    color: #888;
+    cursor: pointer;
+    position: relative;
+}
+
+.tab.active {
+    color: #d12aa5;
+    cursor: default;
+}
+
+.tabContract {
+    font-size: 13px;
+}
+
+.tabClose {
+    margin-left: 10px;
+    background-color: #efefef;
+    color: #333;
+    padding: 0px 4px;
+    font-size: 13px ;
+    line-height: 10px;
+    cursor: pointer !important;
+}
+
+.tabClose:hover, .tabClose:focus {
+    background-color: #d12aa5;
+    color: #fff;
+}
+
+.tabIdentifier {
+    display: block;
+    font-size: 11px;
+}
+
+.tab.active > .tabIdentifier {
+    color: #666;
+}
+
+.action {
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.functionHeading > h1 {
+    display: inline-block;
+    height:40px;
+    width: 40px;
+    line-height: 40px;
+    color: #d12aa5;
+    background-color: #333;
+    font-size: 32px;
+    margin: 0;
+    text-align: center;
+    vertical-align: top;
+}
+
+.functionHeading > h2 {
+    margin: 0;
+    vertical-align: top;
+    line-height: 40px;
+}
+
+.functionInfo {
+    font-size: 13px;
+}
+
+.pager {
+    margin: 10px 0px;
+}
+.pager > li {
+    display: inline-block;
+    background-color: #333;
+}
+
+.pager > li.active {
+    background-color: #d12aa5;
+}
+
+.pager > li.endNav {
+    background-color: #808080;
+}
+
+    .pager > li > a {
+        color: #fff;
+        height: 20px;
+        line-height: 20px;
+        padding: 0px 5px;
+        min-width: 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+    } 
+    
+    .pager > li.endNav > a {
+        color: #fff;
+        width: 40px;
+    }
+
+.tabLoadIndicatorWrapper {
+    height: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tabLoadIndicator {
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    top: 0px;
+    left: 0%;
+    background-color: #d12aa5;
+    -webkit-animation-name: indicateLoad;  
+    -webkit-animation-iteration-count: infinite;  
+    -webkit-animation-timing-function: ease-in;  
+    -webkit-animation-duration: 2s;
+    -moz-animation-name: indicateLoad;  
+    -moz-animation-iteration-count: infinite;  
+    -moz-animation-timing-function: ease-in;  
+    -moz-animation-duration: 2s;
+    animation-name: indicateLoad;  
+    animation-iteration-count: infinite;  
+    animation-timing-function: ease-in;  
+    animation-duration: 2s;
+    display: none;
+}
+
+.tabLoadIndicatorWrapper.loading .tabLoadIndicator  {
+    display: block;
+}
+
+
+                                       
+
+@-webkit-keyframes indicateLoad {  
+0% {width:0%; opacity: 1}
+10%{width:0%;}
+85% {width:100%; opacity: 0.2}
+100% {width:100%; opacity: 0}
+}
+
+@-moz-keyframes indicateLoad {  
+0% {width:0%; opacity: 1}
+10%{width:0%;}
+85% {width:100%; opacity: 0.2}
+100% {width:100%; opacity: 0}
+}
+
+@keyframes indicateLoad {
+0% {width:0%; opacity: 1}
+10%{width:0%;}
+85% {width:100%; opacity: 0.2}
+100% {width:100%; opacity: 0}
+}
+
+.message {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 16px;
+    width: 16px;
+    border-radius: 16px;
+    border: solid 2px #fff;
+    box-shadow : 1px 1px 1px #666;
+    color: #fff;
+    line-height: 16px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.error {
+    background-color: #f00;
+}
+
+.information {
+    background-color: #1b0ab1;
+}
+
+.nomessage {
+    display: none;
+}
+
+.messageBox {
+    background-color: #fff;
+    position: absolute;
+    top : 50px;
+    left: 0px;
+    width: 80%;
+    z-index: 99;
+    left: 10%;
+}
+
+.messageBoxWrapper {
+    padding: 20px;
+}
+
+.messageBox > .message {
+    top: -10px;
+    right: -8px;
+}
+
+.messageOverlay {
+    background-color: rgba(243, 243, 243, 0.65);
+}

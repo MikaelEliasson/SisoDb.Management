@@ -4,3 +4,11 @@ obj
 
 # mstest test results
 TestResults
+
+# Nuget
+packages
+
+
+#visual studio
+*.suo
+*.user

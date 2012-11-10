@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>SisoDb Management</title>
+    <link rel="stylesheet" type="text/css" href="/siso-db-management/style.css">
+</head>
+<body>
+    <header class="pageHeader">
+        <hgroup id="title">
+            <h1>SisoDb.</h1>
+            <h2>Management</h2>
+        </hgroup>
+        <div id="toolBar">
+            <ul id="tabList" data-bind="foreach: tabs">
+                <li class="tab" data-bind="click: $root.activateTab, css  : { active : $root.activeTab() == $data }">
+                    <div>
+                        <span class="tabContract" data-bind="text : entity.ContractName"></span>
+                        <a class="tabClose" data-bind="click : close">x</a>
+                    </div>
+                    <div class="tabLoadIndicatorWrapper" data-bind="css : { loading : isLoading }">
+                        <div class="tabLoadIndicator"></div>
+                    </div>
+                    <span class="tabIdentifier" data-bind="text : tabText"></span>
+                    <div data-bind="attr : {class : messageClass}">
+                        !
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <section class="page">
+        <section id="entityContainer">
+            <hgroup>
+                <h1>Entities</h1>
+            </hgroup>
+            <ul class="entityList" data-bind="foreach: entities">
+                <li class="entity" data-bind="click: $parent.createTab">
+                    <h2 data-bind="text : ContractName, attr : { title : Contract}"></h2>
+                </li>
+            </ul>
+        </section>
+        <section id="workArea">
+            <div data-bind="if: activeTab()">
+                <div data-bind="template: { name: activeTab().state() + 'Template', data: activeTab }">
+                </div>
+
+                <div class="loadingOverlay overlay" data-bind="visible : activeTab().isLoading()">
+                </div>
+
+                <div data-bind="if: activeTab().showMessage()">
+                    <div class="messageOverlay overlay" data-bind="click: activeTab().message().onClose, visible : true">
+                        <div class="messageBox" data-bind="visible : true">
+                            <div data-bind="attr : {class : activeTab().messageClass()}">
+                                !
+                            </div>
+                            <div class="messageBoxWrapper">
+                                <div data-bind="text : activeTab().message().text"></div>
+                                <p class="buttons">
+                                    <a href="#" class="btn" data-bind="click: activeTab().message().onClose">Close message</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-bind="if: !activeTab()">
+                <hgroup>
+                    <h1>Welcome to SisoDb.</h1>
+                    <h2>Management</h2>
+                </hgroup>
+                <p>
+                    To get started. Click an entity in the
+                    <strong>entity list</strong>. By clicking and entity you create a new tab for that
+                    entity. In the tab you can do any operations related to that entity. You can have
+                    several tabs open simultaneously and switch between these as you wish.
+                </p>
+            </div>
+        </section>
+    </section>
+    <footer class="pageFooter">
+        Created by
+        <a href="http://mikee.se">Mikael Eliasson</a>
+    </footer>
+    <script type="text/javascript" src="/siso-db-management/data.js"></script>
+    <script type="text/javascript" src="/siso-db-management/scripts.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            sisodb.management.init(data);
+        });
+    </script>
+
+    <script id="dashboardTemplate" type="text/html">
+        <hgroup>
+            <h1 data-bind="text : entity.ContractName"></h1>
+            <h2 data-bind="text : entity.ImplementationName"></h2>
+        </hgroup>
+
+        <section class="actions">
+            <ul>
+                <li class="action newQuery" data-bind="click : startQuery">
+                    <hgroup class="functionHeading">
+                        <h1>Q</h1>
+                        <h2>Query window</h2>
+                    </hgroup>
+                    <p class="functionInfo">
+                        Let you query this entity. You can also delete by query and update by query from
+                        here
+                    </p>
+                </li>
+                <li class="action newDetails" data-bind="click : startDetails">
+                    <hgroup class="functionHeading">
+                        <h1>D</h1>
+                        <h2>Details window</h2>
+                    </hgroup>
+                    <p class="functionInfo">
+                        Let you view, update and delete an entity. You need the id of the entity. If you
+                        don't have that you can search for the entity in the query window and click on it
+                    </p>
+                </li>
+                <li class="action newDetails" data-bind="click : startInsert">
+                    <hgroup class="functionHeading">
+                        <h1>I</h1>
+                        <h2>Insert window</h2>
+                    </hgroup>
+                    <p class="functionInfo">
+                        Let you insert one or more items using json
+                    </p>
+                </li>
+                <li class="action regenerateIndexes" data-bind="click : regenerateIndexes">
+                    <hgroup class="functionHeading">
+                        <h1>R</h1>
+                        <h2>Regenerate Indexes</h2>
+                    </hgroup>
+                    <p class="functionInfo"></p>
+                </li>
+            </ul>
+        </section>
+    </script>
+
+    <script id="queryTemplate" type="text/html">
+        <hgroup>
+            <h1 data-bind="text : entity.ContractName"></h1>
+            <h2 data-bind="text : entity.ImplementationName"></h2>
+        </hgroup>
+
+        <section class="query">
+            <div data-bind="template: { name: 'queryFormTemplate', data: $data }"></div>
+
+            <p class="buttons">
+                <a href="#" class="btn" data-bind="click : query">Run query</a>
+                <a href="#" class="btn" data-bind="click : deleteByQuery">Delete by query</a>
+            </p>
+        </section>
+        <div data-bind="template : { name: 'resultListTemplate', data : $data }"></div>
+    </script>
+
+    <script id="detailsTemplate" type="text/html">
+        <hgroup>
+            <h1 data-bind="text : entity.ContractName"></h1>
+            <h2 data-bind="text : entity.ImplementationName"></h2>
+        </hgroup>
+
+        <fieldset>
+            <legend>Query</legend>
+            <h1>Query</h1>
+            <ul class="fieldSetFields">
+                <li>
+                    <div class="label">
+                        Id
+                        <span class="extraInfo">Type the id of the entity
+                        </span>
+                    </div>
+                    <div class="property">
+                        <input type="text" data-bind="value : entityId" />
+                    </div>
+                </li>
+            </ul>
+
+            <p class="buttons">
+                <a href="#" class="btn" data-bind="click : loadItem">Load item</a>
+                <a href="#" class="btn" data-bind="click : deleteItem">Delete item</a>
+            </p>
+        </fieldset>
+
+        <section>
+            <textarea class="large" data-bind="value: entityJson"></textarea>
+            <p class="buttons">
+                <a href="#" class="btn" data-bind="click : updateItem">Update item</a>
+            </p>
+        </section>
+
+
+    </script>
+
+    <script id="insertTemplate" type="text/html">
+        <hgroup>
+            <h1 data-bind="text : entity.ContractName"></h1>
+            <h2 data-bind="text : entity.ImplementationName"></h2>
+        </hgroup>
+
+        <fieldset>
+            <legend>Insert</legend>
+            <h1>Insert</h1>
+            <p>
+                You can insert item(s) by writing the json here. It works for a single entity using valid json { "prop" : value , ... } but also for many items using
+                [{ "prop" : value , ... }, { "prop" : value , ... }, ...]
+            </p>
+            <textarea class="large" data-bind="value: entityJson"></textarea>
+            <p class="buttons">
+                <a href="#" class="btn" data-bind="click : insertItem">Insert items</a>
+            </p>
+        </fieldset>
+
+        <section>
+           
+        </section>
+
+
+    </script>
+
+    <script id="queryFormTemplate" type="text/html">
+        <fieldset>
+            <legend>Query</legend>
+            <h1>Query</h1>
+            <ul class="fieldSetFields">
+                <li>
+                    <div class="label">
+                        Setup code
+                        <span class="extraInfo">Prepare using statements and variable declarations
+                        </span>
+                    </div>
+                    <div class="property">
+                        <textarea data-bind="value : setupCode"></textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">
+                        Predicate
+                        <span class="extraInfo">Should be a Func&lt;T, bool&gt;. For example: x => x.Age > 18
+                        </span>
+                    </div>
+                    <div class="property">
+                        <textarea data-bind="value : predicate"></textarea>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">
+                        Sort
+                        <span class="extraInfo">Should be a Func&lt;T, TProp&gt;. For example: x => x.Age
+                        </span>
+                    </div>
+                    <div class="property">
+                        <input type="text" data-bind="value : sortBy" />
+                        <select data-bind="value: sortOrder">
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="label">
+                        Page size
+                    </div>
+                    <div class="property">
+                        <input type="text" data-bind="value : pageSize" />
+                    </div>
+                </li>
+                <li>
+                    <div class="label">
+                        Properties you can query/sort on
+                    </div>
+                    <div class="property">
+                        <ul class="propertyList" data-bind="foreach: entity.Properties">
+                            <li>
+                                <span data-bind="text : $data"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+        </fieldset>
+    </script>
+
+    <script id="resultListTemplate" type="text/html">
+        <section>
+            <hgroup>
+                <h1>Results.</h1>
+                <h2>
+                    Showing
+                    <span data-bind="text : showingText"></span>
+                    of
+                    <span data-bind="text : resultCount"></span>
+                    matches
+                </h2>
+            </hgroup>
+
+            <div data-bind="if : results().length">
+                <div data-bind="template: { name: 'pagingTemplate', data: $data }"></div>
+                <table class="resultTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th></th>
+                            <!-- ko foreach : results()[0].properties -->
+                            <th data-bind="text: key"></th>
+                            <!-- /ko -->
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach : results">
+                        <tr>
+                            <td data-bind="text: ($index() + ($parent.pageSize() * $parent.page()))"></td>
+                            <td>
+                                <a data-bind="click: click" href="#">D</a></td>
+                            <!-- ko foreach: properties -->
+                            <td data-bind="text: $root.truncate(value, 50)"></td>
+                            <!-- /ko -->
+                        </tr>
+                    </tbody>
+                </table>
+                <div data-bind="template: { name: 'pagingTemplate', data: $data }"></div>
+            </div>
+            <div data-bind="if : !results().length">
+                <p>No results found!</p>
+            </div>
+        </section>
+    </script>
+
+    <script id="pagingTemplate" type="text/html">
+        <div data-bind="if : (resultCount() > results().length)">
+            <div class="pagingContainer">
+                <ul class="pager" data-bind="foreach : pageLinks">
+                    <li data-bind="attr : { class : cssClass }">
+                        <a href="#" data-bind="text : text, click : $parent.changePage"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </script>
+</body>
+</html>
