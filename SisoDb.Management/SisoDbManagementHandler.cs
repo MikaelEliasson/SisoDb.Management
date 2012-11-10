@@ -42,6 +42,7 @@ namespace SisoDb.Management
                 if(!Configuration.Authorize(actionName)){
                     Context.SetStatusCode(401);
                     Context.Write("You do not have the required permissions.");
+                    return;
                 }
 
                 switch (actionName)
