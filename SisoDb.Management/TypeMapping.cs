@@ -23,7 +23,7 @@ namespace SisoDb.Management
                 if (properties == null)
                 {
                     var schema = Configuration.DB.StructureSchemas.GetSchema(Contract);
-                    properties = schema.IndexAccessors.Select(x => x.Path).ToList();
+                    properties = schema.IndexAccessors.Where(x => !x.IsElement && !x.IsEnumerable).Select(x => x.Path).ToList();
                 }
                 return properties;
             }

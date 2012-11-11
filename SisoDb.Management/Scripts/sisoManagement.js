@@ -302,10 +302,21 @@ sisodb.management = (function () {
             ? "message " + tab.message().type
             : "nomessage";
         }, tab);
+
+        tab.properties = [];
+        for (var i = 0; i < tab.entity.Properties.length; i++) {
+            var property = tab.entity.Properties[i];
+            var parts = property.split('.');
+
+            tab.properties.push({ name: property, parts: parts })
+
+        }
     }
 
     var buildResultList = function (tab, json) {
         tab.resultCount(json.TotalMatches);
+        
+
         var results = [];
         for (var i = 0; i < json.Entities.length; i++) {
             var obj = json.Entities[i];
@@ -316,16 +327,26 @@ sisodb.management = (function () {
                     createDetailsTab(tab, this);
                 }
             };
-            for (var key in obj) {
-                var attrValue = obj[key];
-                if (Object.prototype.toString.call(attrValue) !== '[object Array]') {
-                    resultObject.properties.push({ value: attrValue, key: key });
-                }
+            for (var j = 0; j < tab.properties.length; j++) {
+                var prop = tab.properties[j];
+
+                resultObject.properties.push(getValue(prop, obj));
             }
             results.push(resultObject);
         }
         tab.results(results);
     }
+
+    var getValue = function (property, obj) {
+        var temp = obj[property.parts[0]];
+        for (var k = 1; k < property.parts.length; k++) {
+            if (typeof temp == 'undefined') {
+                return { value: '', key: property.name };
+            }
+            temp = temp[property.parts[k]];
+        }
+        return { value: typeof temp == 'undefined' ? '' : temp, key: property.name };
+    };
 
     var createDetailsTab = function (oldTab, itemToShow) {
         var tab = {

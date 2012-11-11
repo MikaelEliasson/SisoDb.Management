@@ -270,6 +270,8 @@
                 <li>
                     <div class="label">
                         Properties you can query/sort on
+                        <span class="extraInfo">Arrays are not included in this list even though they might be index
+                        </span>
                     </div>
                     <div class="property">
                         <ul class="propertyList" data-bind="foreach: entity.Properties">
@@ -304,8 +306,8 @@
                         <tr>
                             <th>#</th>
                             <th></th>
-                            <!-- ko foreach : results()[0].properties -->
-                            <th data-bind="text: key"></th>
+                            <!-- ko foreach : properties -->
+                            <th data-bind="text: name"></th>
                             <!-- /ko -->
                         </tr>
                     </thead>

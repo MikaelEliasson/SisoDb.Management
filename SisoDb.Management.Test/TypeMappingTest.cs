@@ -7,7 +7,7 @@ using SisoDb.Management.Test.Entities;
 namespace SisoDb.Management.Test
 {
     [TestClass]
-    public class TypeMappingTest
+    public class TypeMappingTest : TestBase
     {
         [TestMethod]
         public void Predicate_ForInterface_CanBuildPredicate()
@@ -102,6 +102,88 @@ namespace SisoDb.Management.Test
             var orderedPersons = persons.OrderBy(expression).ToList();
 
             Assert.AreEqual(2, orderedPersons[0].Id);
+        }
+
+        [TestMethod]
+        public void Properties_SimpleObject()
+        {
+            SetConfig();
+            var mapping = new TypeMapping<SimpleObject, SimpleObject>();
+            var properties = mapping.Properties.ToList();
+
+            Assert.AreEqual(3, properties.Count);
+            Assert.IsTrue(properties.Contains("Name"));
+            Assert.IsTrue(properties.Contains("Date"));
+        }
+
+        [TestMethod]
+        public void Properties_Nullable()
+        {
+            SetConfig();
+            var mapping = new TypeMapping<ObjectWitNullable, ObjectWitNullable>();
+            var properties = mapping.Properties.ToList();
+
+            Assert.AreEqual(3, properties.Count);
+            Assert.IsTrue(properties.Contains("Name"));
+            Assert.IsTrue(properties.Contains("Deleted"));
+        }
+
+        [TestMethod]
+        public void Properties_Nested()
+        {
+            SetConfig();
+            var mapping = new TypeMapping<NestedObject, NestedObject>();
+            var properties = mapping.Properties.ToList();
+
+            Assert.AreEqual(4, properties.Count);
+            Assert.IsTrue(properties.Contains("OuterName"));
+            Assert.IsTrue(properties.Contains("Id"));
+            Assert.IsTrue(properties.Contains("Inner.Name"));
+            Assert.IsTrue(properties.Contains("Inner.Date"));
+        }
+
+        [TestMethod]
+        public void Properties_Array()
+        {
+            SetConfig();
+            var mapping = new TypeMapping<ArrayObject, ArrayObject>();
+            var properties = mapping.Properties.ToList();
+
+            Assert.AreEqual(1, properties.Count);
+            Assert.IsTrue(properties.Contains("Id"));
+        }
+
+        public class SimpleObject
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime Date { get; set; }
+        }
+
+        public class ObjectWitNullable
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public bool? Deleted { get; set; }
+        }
+
+        public class NestedObject
+        {
+            public int Id { get; set; }
+            public string OuterName { get; set; }
+            public InnerObject Inner { get; set; }
+        }
+
+        public class ArrayObject
+        {
+            public int Id { get; set; }
+            public IEnumerable<InnerObject> Array { get; set; }
+        }
+
+        public class InnerObject
+        {
+            public string Name { get; set; }
+            public DateTime Date { get; set; }
         }
     }
 }

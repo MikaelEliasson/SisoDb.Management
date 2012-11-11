@@ -33,6 +33,8 @@ namespace TestApplication
                     Created = DateTime.Today.AddDays(i - 50), 
                     Title = "Title" + i, 
                     Text = "Text" + i, 
+                    LatestAction = i % 2 == 0 ? new TakenAction{Date = DateTime.Today, Name = "Name"} : null,
+                    CloseDate = i % 2 == 1 ? DateTime.Today : (DateTime?)null,
                     VoteCount = i }).ToList();
 
                 session.InsertMany<IFeedbackItem>(items);
