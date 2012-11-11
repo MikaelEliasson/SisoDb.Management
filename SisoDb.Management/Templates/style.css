@@ -430,3 +430,14 @@ select {
 .messageOverlay {
     background-color: rgba(243, 243, 243, 0.65);
 }
+
+.version {
+    display: block;
+}
+.pageFooter > .links {
+    margin: 3px 0;
+}
+.pageFooter > .links > li {
+    display: inline-block;
+    margin-right: 10px;
+} 

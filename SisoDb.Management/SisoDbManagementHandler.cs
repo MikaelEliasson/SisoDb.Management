@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Routing;
 using ServiceStack.Text;
@@ -208,8 +209,12 @@ namespace SisoDb.Management
 
         private string GetData()
         {
+            var assembly = typeof(SisoDbManagementHandler).Assembly;
+            var v = AssemblyName.GetAssemblyName(assembly.Location).Version;
+            var version = string.Format("{0}.{1}.{2}", v.Major, v.Minor, v.Build);
+
             Context.SetContentType("application/json");
-            return "var data = " + JsonSerializer.SerializeToString(Configuration.TypeMappings.Select(m => m.Value)) + ";";
+            return "var data = { \"Version\": \"" + version  + "\", \"Entities\":" + JsonSerializer.SerializeToString(Configuration.TypeMappings.Select(m => m.Value)) + "};";
         }
 
         private QuerySpec GetQuerySpec(TypeMapping typeMapping)

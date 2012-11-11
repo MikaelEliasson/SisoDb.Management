@@ -82,12 +82,18 @@
     <footer class="pageFooter">
         Created by
         <a href="http://mikee.se">Mikael Eliasson</a>
+        <ul class="links">
+            <li><a href="https://github.com/MikaelEliasson/SisoDb.Management">SisoDb.Management [Github]</a></li>
+            <li><a href="https://github.com/danielwertheim/SisoDb-Provider">SisoDb [Github]</a></li>
+            <li><a href="http://sisodb.com">SisoDb</a></li>
+        </ul>
     </footer>
     <script type="text/javascript" src="/siso-db-management/data.js"></script>
     <script type="text/javascript" src="/siso-db-management/scripts.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            sisodb.management.init(data);
+            sisodb.management.init(data.Entities);
+            $('.pageFooter').append('<span class="version">Version ' + data.Version + '</span>');
         });
     </script>
 
