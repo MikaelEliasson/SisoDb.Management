@@ -1,19 +1,23 @@
 ﻿var SisoManagement;
 (function (SisoManagement) {
     var Tab = (function () {
-        function Tab(entity) {
+        function Tab(entity, values) {
+            /*values should keep the same interface as Tab but not have 
+            observable properties. This is primarily to support storing tabs */
+            values = values || {}; 
+            this.id = Number(values.id || +new Date); //Use a timestamp as id. It will only be used to identify the tab later on
             this.entity = entity;
-            this.isLoading= ko.observable(false); 
-            this.state= ko.observable('dashboard');
-            this.setupCode= ko.observable('');
-            this.predicate= ko.observable('');
-            this.resultCount= ko.observable(null);
-            this.entityId= ko.observable(null);
-            this.results= ko.observableArray([]);
-            this.entityJson= ko.observable(null);
-            this.sortBy= ko.observable('x => x.' + entity.IdKey);
-            this.sortOrder= ko.observable('asc');
-            this.pageSize= ko.observable(100);
+            this.isLoading = ko.observable(false); 
+            this.state = ko.observable(values.state || 'dashboard');
+            this.setupCode = ko.observable(values.setupCode || '');
+            this.predicate = ko.observable(values.predicate || '');
+            this.resultCount = ko.observable(null);
+            this.entityId = ko.observable(values.entityId || null);
+            this.results = ko.observableArray([]);
+            this.entityJson = ko.observable(null);
+            this.sortBy = ko.observable( values.sortBy || ('x => x.' + entity.IdKey));
+            this.sortOrder = ko.observable(values.sortOrder || 'asc');
+            this.pageSize = ko.observable(Number(values.pageSize || 100));
             this.page = ko.observable(0);
             this.message = ko.observable(null);
             this.properties = [];
@@ -251,34 +255,7 @@
         };
 
         Tab.prototype.close = function () {
-            var tab = this;
-            var needCheck = false;
-            var state = tab.state();
-            if (state == 'query' && tab.predicate().length > 0) {
-                needCheck = true;
-            }
-            if (state == 'details' && tab.entityId() && tab.entityId().length > 0) {
-                needCheck = true;
-            }
-
-            if (needCheck && !confirm('Are you sure you want to close this tab?')) {
-                return;
-            }
-
-            var openTab = _vm.tabQueue.pop();
-            if (openTab == tab) {
-                var temp = _vm.tabQueue.pop();
-                while (temp && temp.isDisposed) {
-                    temp = _vm.tabQueue.pop();
-                }
-                _vm.activateTab(temp);
-            } else {
-                _vm.tabQueue.push(openTab);
-            }
-            this.isDisposed = true;
-            _vm.tabs.remove(tab);
-
-            //Might need to clear tabQueue here to release memory used by the tab
+            SisoManagement.closeTab(this);
         };
 
         Tab.prototype.onUnexpectedError = function (xhr, textStatus, errorThrown) {

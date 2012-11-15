@@ -13,6 +13,7 @@
             <h2>Management</h2>
         </hgroup>
         <div id="toolBar">
+            <a id="closeAllLink" data-bind="click : closeAll, visible: tabs().length > 1" href="#">close all<span class="tabClose">x</span></a>
             <ul id="tabList" data-bind="foreach: tabs">
                 <li class="tab" data-bind="click: $root.activateTab, css  : { active : $root.activeTab() == $data }">
                     <div>
@@ -28,6 +29,7 @@
                     </div>
                 </li>
             </ul>
+            <div style="clear:both;"></div>
         </div>
     </header>
     <section class="page">
