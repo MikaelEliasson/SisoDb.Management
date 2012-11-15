@@ -51,11 +51,12 @@ namespace TestApplication
                 session.InsertMany<IComment>(comments);
 
             }
-
+            db.Configure().ForProduction();
             Configuration.DB = db;
 
             Configuration.AddTypeMapping<IFeedbackItem, FeedbackItem>();
             Configuration.AddTypeMapping<IComment, Comment>();
+            Configuration.AddTypeMapping<EntityWithNoSchema, EntityWithNoSchema>();
 
             //Never use this in production. You need to provide tight secuity for this
             Configuration.Authorize = action => true;

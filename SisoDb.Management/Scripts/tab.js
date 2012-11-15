@@ -97,10 +97,15 @@
             this.state('insert');
         };
 
+        var makeAjaxCall = function(tab, options){
+            options.context = tab;
+            $.ajax(options);
+        }
+
         Tab.prototype.regenerateIndexes = function () {
             var tab = this;
             tab.isLoading(true);
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/regenerateindexes',
                 data: { entityType: this.entity.Contract },
@@ -111,7 +116,27 @@
                             tab.message(null);
                         }
                     });
-                }
+                },
+                error: tab.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.insertschema = function () {
+            var tab = this;
+            tab.isLoading(true);
+            makeAjaxCall(tab, {
+                type: 'POST',
+                url: '/siso-db-management/insertschema',
+                data: { entityType: this.entity.Contract },
+                success: function () {
+                    tab.isLoading(false);
+                    tab.message({
+                        type: 'information', text: 'Schema inserted!', onClose: function () {
+                            tab.message(null);
+                        }
+                    });
+                },
+                error: tab.onUnexpectedError
             });
         };
 
@@ -132,7 +157,7 @@
             this.results([]);
             this.resultCount(0);
             var tab = this;
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/query',
                 data: {
@@ -160,7 +185,7 @@
                 this.results([]);
                 this.resultCount(0);
                 var tab = this;
-                $.ajax({
+                makeAjaxCall(tab, {
                     type: 'POST',
                     url: '/siso-db-management/deletebyquery',
                     data: { entityType: this.entity.Contract, setup: this.setupCode(), predicate: this.predicate() },
@@ -181,7 +206,7 @@
             //ErrorHandling
             this.isLoading(true);
             var tab = this;
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/entity',
                 data: { entityType: this.entity.Contract, entityId: this.entityId() },
@@ -197,7 +222,7 @@
             //ErrorHandling
             var tab = this;
             tab.isLoading(true);
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/delete',
                 data: { entityType: tab.entity.Contract, entityId: tab.entityId() },
@@ -218,7 +243,7 @@
             //errorHandling
             var tab = this;
             tab.isLoading(true);
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/update',
                 data: { entityType: this.entity.Contract, entityId: tab.entityId(), modifiedEntity: tab.entityJson() },
@@ -238,7 +263,7 @@
             //ErrorHandling
             var tab = this;
             tab.isLoading(true);
-            $.ajax({
+            makeAjaxCall(tab, {
                 type: 'POST',
                 url: '/siso-db-management/insert',
                 data: { entityType: tab.entity.Contract, json: tab.entityJson() },

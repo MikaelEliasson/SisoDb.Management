@@ -143,6 +143,15 @@
                     </hgroup>
                     <p class="functionInfo"></p>
                 </li>
+
+                <li class="action regenerateIndexes" data-bind="click : insertschema">
+                    <hgroup class="functionHeading">
+                        <h1>S</h1>
+                        <h2>Insert Schema</h2>
+                    </hgroup>
+                    <p class="functionInfo">Synchronize the schema to the data. NOTE: This method will temporarily set SynchronizeSchemaChanges and AllowUpsertsOfSchemas to true. 
+                        In the current version it also only works if no query has been run against the entity</p>
+                </li>
             </ul>
         </section>
     </script>

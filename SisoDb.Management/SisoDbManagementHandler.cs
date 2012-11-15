@@ -46,6 +46,7 @@ namespace SisoDb.Management
                     return;
                 }
 
+                Context.SetStatusCode(200); //Set this before so the methods can override it
                 switch (actionName)
                 {
                     case "style":
@@ -78,6 +79,9 @@ namespace SisoDb.Management
                     case "insert":
                         output = Insert();
                         break;
+                    case "insertschema":
+                        output = InsertSchema();
+                        break;
                     case "entity":
                         output = Entity();
                         break;
@@ -86,10 +90,10 @@ namespace SisoDb.Management
                         break;
                     default:
                         Context.SetStatusCode(404);
+                        output = "Method [" + actionName + "] not found";
                         break;
                 }
-
-                Context.SetStatusCode(200);
+                
                 Context.Write(output);
             }
             catch (Exception e)
@@ -98,7 +102,6 @@ namespace SisoDb.Management
                 Context.Write(e.Message);
             }
         }
-
 
         private string Entity()
         {
@@ -204,6 +207,23 @@ namespace SisoDb.Management
 
             genericMethod.Invoke(Configuration.DB.Maintenance, null);
 
+            return Success;
+        }
+
+        private string InsertSchema()
+        {
+            var typeMatch = GetTypeMapping();
+
+            //This whole part is a hack and it only works if no query has been run on the entity earlier as siso cache that.
+            //BEtter support for this will have to be added to Siso first
+            var settings = Configuration.DB.Settings;
+            var oldAllowUpsertsOfSchemas = settings.AllowUpsertsOfSchemas;
+            var oldSynchronizeSchemaChanges = settings.SynchronizeSchemaChanges;
+            settings.AllowUpsertsOfSchemas = true;
+            settings.SynchronizeSchemaChanges = true;
+            Configuration.DB.UpsertStructureSet(typeMatch.Contract);
+            settings.AllowUpsertsOfSchemas = oldAllowUpsertsOfSchemas;
+            settings.SynchronizeSchemaChanges = oldSynchronizeSchemaChanges;
             return Success;
         }
 

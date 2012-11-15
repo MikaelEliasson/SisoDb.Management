@@ -12,6 +12,16 @@ namespace SisoDb.Management.Test
 
             db.EnsureNewDatabase();
 
+
+            Configuration.Clear();
+            Configuration.AddTypeMapping<IPerson, Person>();
+            Configuration.DB = db;
+
+            Configuration.DB.Settings.AllowUpsertsOfSchemas = true;
+            Configuration.DB.Settings.SynchronizeSchemaChanges = true;
+
+            Configuration.Authorize = str => true;
+
             if (setup != null)
             {
                 using (var session = db.BeginSession())
@@ -19,12 +29,7 @@ namespace SisoDb.Management.Test
                     setup(session);
                 }
             }
-            Configuration.Clear();
-            Configuration.AddTypeMapping<IPerson, Person>();
-            Configuration.DB = db;
-
-            Configuration.Authorize = str => true;
-
+            
             Configuration.Init();
 
 

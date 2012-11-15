@@ -34,18 +34,19 @@
         if (_supportsLocalStorage) {
 
             var tabs = JSON.parse(localStorage.getItem('SisoManagement_TabStore'));
-            var active = Number(localStorage.getItem('SisoManagement_Active'));
-            for (var i = 0; i < tabs.length; i++) {
-                var t = tabs[i];
-                var tab = new SisoManagement.Tab(t.entity, t);
-                bindTabChangeMonitoring(tab);
-                _vm.tabs.push(tab);
-                if (tab.id === active) {
-                    _vm.activeTab(tab);
+            if(tabs){
+                var active = Number(localStorage.getItem('SisoManagement_Active'));
+                for (var i = 0; i < tabs.length; i++) {
+                    var t = tabs[i];
+                    var tab = new SisoManagement.Tab(t.entity, t);
+                    bindTabChangeMonitoring(tab);
+                    _vm.tabs.push(tab);
+                    if (tab.id === active) {
+                        _vm.activeTab(tab);
+                    }
+
                 }
-
             }
-
             _vm.activeTab.subscribe(storeActive);
             _vm.tabs.subscribe(storeTabs);
             
