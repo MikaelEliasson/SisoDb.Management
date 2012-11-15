@@ -1,0 +1,341 @@
+﻿var SisoManagement;
+(function (SisoManagement) {
+    var Tab = (function () {
+        function Tab(entity) {
+            this.entity = entity;
+            this.isLoading= ko.observable(false); 
+            this.state= ko.observable('dashboard');
+            this.setupCode= ko.observable('');
+            this.predicate= ko.observable('');
+            this.resultCount= ko.observable(null);
+            this.entityId= ko.observable(null);
+            this.results= ko.observableArray([]);
+            this.entityJson= ko.observable(null);
+            this.sortBy= ko.observable('x => x.' + entity.IdKey);
+            this.sortOrder= ko.observable('asc');
+            this.pageSize= ko.observable(100);
+            this.page = ko.observable(0);
+            this.message = ko.observable(null);
+            this.properties = [];
+
+
+            this.tabText = ko.computed(function () {
+                switch (this.state()) {
+                    case 'dashboard':
+                        return 'Dashboard';
+                    case 'query':
+                        return 'Q: ' + this.predicate();
+                    case 'details':
+                        return 'D: ' + this.entityId();
+                    case 'insert':
+                        return 'Insert';
+                    default:
+                        return 'unknown';
+                }
+            }, this);
+
+            this.showingText = ko.computed(function () {
+                var min = this.pageSize() * this.page();
+                var max = this.results().length + min;
+
+                return (min + 1) + '-' + max;
+            }, this);
+
+            this.pageLinks = ko.computed(function () {
+                var page = this.page();
+                var pages = Math.ceil(this.resultCount() / this.pageSize());
+
+                var links = [];
+                var start = Math.max(0, page - 3);
+                var max = Math.min(pages - 1, page + 3);
+                if (start > 0) {
+                    links.push({ index: 0, text: 'First', cssClass: 'endNav' });
+                }
+                for (var i = start; i <= max; i++) {
+                    links.push({ index: i, text: i, cssClass: i == page ? 'active' : '' });
+                }
+                if (max < pages - 1) {
+                    links.push({ index: pages - 1, text: 'Last', cssClass: 'endNav' });
+                }
+
+                return links;
+            }, this);
+
+            this.messageClass = ko.computed(function () {
+                return this.message()
+                ? 'message ' + this.message().type
+                : 'nomessage';
+            }, this);
+
+            this.showMessage = ko.computed(function () {
+                return this.message() != null;
+            }, this);
+
+            for (var i = 0; i < this.entity.Properties.length; i++) {
+                var property = this.entity.Properties[i];
+                var parts = property.split('.');
+
+                this.properties.push({ name: property, parts: parts })
+
+            }
+        }
+
+
+        Tab.prototype.startQuery = function () {
+            this.state('query');
+        };
+
+        Tab.prototype.startDetails = function () {
+            this.state('details');
+        };
+
+        Tab.prototype.startInsert = function () {
+            this.state('insert');
+        };
+
+        Tab.prototype.regenerateIndexes = function () {
+            var tab = this;
+            tab.isLoading(true);
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/regenerateindexes',
+                data: { entityType: this.entity.Contract },
+                success: function () {
+                    tab.isLoading(false);
+                    tab.message({
+                        type: 'information', text: 'Indexes regenerated!', onClose: function () {
+                            tab.message(null);
+                        }
+                    });
+                }
+            });
+        };
+
+        Tab.prototype.query = function () {
+            //ErrorHandling
+            this.page(0);
+            this.loadData();
+        };
+
+        Tab.prototype.changePage = function (item) {
+            this.page(item.index);
+
+            this.loadData();
+        }
+
+        Tab.prototype.loadData = function () {
+            this.isLoading(true);
+            this.results([]);
+            this.resultCount(0);
+            var tab = this;
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/query',
+                data: {
+                    entityType: this.entity.Contract,
+                    setup: this.setupCode(),
+                    predicate: this.predicate(),
+                    orderby: this.sortBy(),
+                    sortorder: this.sortOrder(),
+                    pagesize: this.pageSize(),
+                    page: this.page()
+                },
+                success: function (json) {
+                    buildResultList(tab, json);
+                    tab.isLoading(false);
+                },
+                error: this.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.deleteByQuery = function () {
+            //ErrorHandling
+
+            if (confirm('Are you sure you want to delete all ' + this.entity.ContractName + ' matching: ' + this.predicate())) {
+                this.isLoading(true);
+                this.results([]);
+                this.resultCount(0);
+                var tab = this;
+                $.ajax({
+                    type: 'POST',
+                    url: '/siso-db-management/deletebyquery',
+                    data: { entityType: this.entity.Contract, setup: this.setupCode(), predicate: this.predicate() },
+                    success: function (number) {
+                        tab.isLoading(false);
+                        tab.message({
+                            type: 'information', text: number + ' ' + tab.entity.ContractName + ' was deleted', onClose: function () {
+                                tab.message(null);
+                            }
+                        });
+                    },
+                    error: this.onUnexpectedError
+                });
+            }
+        };
+
+        Tab.prototype.loadItem = function () {
+            //ErrorHandling
+            this.isLoading(true);
+            var tab = this;
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/entity',
+                data: { entityType: this.entity.Contract, entityId: this.entityId() },
+                success: function (json) { //json as text/html
+                    tab.entityJson(json);
+                    tab.isLoading(false);
+                },
+                error: tab.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.deleteItem = function () {
+            //ErrorHandling
+            var tab = this;
+            tab.isLoading(true);
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/delete',
+                data: { entityType: tab.entity.Contract, entityId: tab.entityId() },
+                success: function (json) {
+                    tab.isLoading(false);
+                    tab.message({
+                        type: 'information', text: 'Item was deleted!', onClose: function () {
+                            tab.message(null);
+                            tab.close();
+                        }
+                    });
+                },
+                error: tab.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.updateItem = function () {
+            //errorHandling
+            var tab = this;
+            tab.isLoading(true);
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/update',
+                data: { entityType: this.entity.Contract, entityId: tab.entityId(), modifiedEntity: tab.entityJson() },
+                success: function (json) { //json as text/html
+                    tab.isLoading(false);
+                    tab.message({
+                        type: 'information', text: 'Item updated!', onClose: function () {
+                            tab.message(null);
+                        }
+                    });
+                },
+                error: tab.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.insertItem = function () {
+            //ErrorHandling
+            var tab = this;
+            tab.isLoading(true);
+            $.ajax({
+                type: 'POST',
+                url: '/siso-db-management/insert',
+                data: { entityType: tab.entity.Contract, json: tab.entityJson() },
+                success: function (json) { //json as text/html
+                    tab.isLoading(false);
+                    tab.message({
+                        type: 'information', text: 'Items inserted!', onClose: function () {
+                            tab.message(null);
+                        }
+                    });
+                },
+                error: tab.onUnexpectedError
+            });
+        };
+
+        Tab.prototype.close = function () {
+            var tab = this;
+            var needCheck = false;
+            var state = tab.state();
+            if (state == 'query' && tab.predicate().length > 0) {
+                needCheck = true;
+            }
+            if (state == 'details' && tab.entityId() && tab.entityId().length > 0) {
+                needCheck = true;
+            }
+
+            if (needCheck && !confirm('Are you sure you want to close this tab?')) {
+                return;
+            }
+
+            var openTab = _vm.tabQueue.pop();
+            if (openTab == tab) {
+                var temp = _vm.tabQueue.pop();
+                while (temp && temp.isDisposed) {
+                    temp = _vm.tabQueue.pop();
+                }
+                _vm.activateTab(temp);
+            } else {
+                _vm.tabQueue.push(openTab);
+            }
+            this.isDisposed = true;
+            _vm.tabs.remove(tab);
+
+            //Might need to clear tabQueue here to release memory used by the tab
+        };
+
+        Tab.prototype.onUnexpectedError = function (xhr, textStatus, errorThrown) {
+            var tab = this;
+            tab.isLoading(false);
+            tab.message({
+                type: 'error', text: errorThrown + ':' + xhr.responseText, onClose: function () {
+                    tab.message(null);
+                }
+            });
+        };
+
+        return Tab;
+    })();
+    SisoManagement.Tab = Tab;
+
+    var buildResultList = function (tab, json) {
+        tab.resultCount(json.TotalMatches);
+
+        var results = [];
+        for (var i = 0; i < json.Entities.length; i++) {
+            var obj = json.Entities[i];
+            var resultObject = {
+                object: obj,
+                properties: [],
+                click: function (event) {
+                    SisoManagement.createDetailsTab(tab, this);
+                }
+            };
+            for (var j = 0; j < tab.properties.length; j++) {
+                var prop = tab.properties[j];
+
+                resultObject.properties.push(getValue(prop, obj));
+            }
+            results.push(resultObject);
+        }
+        tab.results(results);
+    };
+
+    var getValue = function (property, obj) {
+        var temp = obj[property.parts[0]];
+        for (var k = 1; k < property.parts.length; k++) {
+            if (typeof temp == 'undefined') {
+                return { value: '', key: property.name };
+            }
+            temp = temp[property.parts[k]];
+        }
+        return { value: typeof temp == 'undefined' ? '' : temp, key: property.name };
+    };
+
+    var isValidJson = function (str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    };
+
+})(SisoManagement || (SisoManagement = {}));

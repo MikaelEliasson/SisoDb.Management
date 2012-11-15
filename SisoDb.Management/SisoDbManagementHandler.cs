@@ -54,7 +54,7 @@ namespace SisoDb.Management
                         break;
                     case "scripts":
                         Context.SetContentType("text/javascript");
-                        output = GetResource("jquery-1.8.2.min.js") + GetResource("knockout-2.2.0.js") + GetResource("sisoManagement.js");
+                        output = GetResource("jquery-1.8.2.min.js") + GetResource("knockout-2.2.0.js") + GetResource("sisoManagement.js") + GetResource("tab.js");
                         break;
                     case "data":
                         output = GetData();
