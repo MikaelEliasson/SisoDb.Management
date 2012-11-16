@@ -53,6 +53,7 @@ h1 {
     display: -webkit-flex;
     display: -moz-box;
     display: flex;
+    display: -ms-flexbox;
     background-color: #fff;
     width: 100%;
     padding: 0px 10px 50px;
@@ -63,6 +64,7 @@ h1 {
     flex: 1;
     -webkit-flex: 1;
     -moz-box-flex: 1;
+    -ms-flex: 1;
     position: relative;
 }
 
@@ -439,18 +441,9 @@ select {
     top: 0px;
     left: 0%;
     background-color: #d12aa5;
-    -webkit-animation-name: indicateLoad;  
-    -webkit-animation-iteration-count: infinite;  
-    -webkit-animation-timing-function: ease-in;  
-    -webkit-animation-duration: 2s;
-    -moz-animation-name: indicateLoad;  
-    -moz-animation-iteration-count: infinite;  
-    -moz-animation-timing-function: ease-in;  
-    -moz-animation-duration: 2s;
-    animation-name: indicateLoad;  
-    animation-iteration-count: infinite;  
-    animation-timing-function: ease-in;  
-    animation-duration: 2s;
+    -webkit-animation: indicateLoad 2s infinite ease-in;  
+    -moz-animation: indicateLoad 2s infinite ease-in;  
+    animation: indicateLoad 2s infinite ease-in;  
     display: none;
 }
 
@@ -481,6 +474,7 @@ select {
 85% {width:100%; opacity: 0.2}
 100% {width:100%; opacity: 0}
 }
+
 
 .message {
     position: absolute;
