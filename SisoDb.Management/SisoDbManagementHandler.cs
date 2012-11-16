@@ -22,7 +22,7 @@ namespace SisoDb.Management
         /// <summary>
         /// Should mainly be changed for testing
         /// </summary>
-        public static IContextAdapter Context = new HttpContextAdapter(); 
+        public static IContextAdapter Context = new HttpContextAdapter();
 
         public void ProcessRequest(HttpContext context)
         {
@@ -40,7 +40,8 @@ namespace SisoDb.Management
                 string path = Context.GetAppRelativeCurrentExecutionFilePath();
                 var actionName = Path.GetFileNameWithoutExtension(path).ToLowerInvariant();
 
-                if(!Configuration.Authorize(actionName)){
+                if (!Configuration.Authorize(actionName))
+                {
                     Context.SetStatusCode(401);
                     Context.Write("You do not have the required permissions.");
                     return;
@@ -61,7 +62,7 @@ namespace SisoDb.Management
                         output = GetData();
                         break;
                     case "page":
-                        Context.SetContentType("text/html");;
+                        Context.SetContentType("text/html"); ;
                         output = GetResource("page.html");
                         break;
                     case "query":
@@ -88,12 +89,18 @@ namespace SisoDb.Management
                     case "regenerateindexes":
                         output = RegenerateIndexes();
                         break;
+                    case "initdb":
+                        output = InitDatabase(false);
+                        break;
+                    case "initdbandstructures":
+                        output = InitDatabase(true);
+                        break;
                     default:
                         Context.SetStatusCode(404);
                         output = "Method [" + actionName + "] not found";
                         break;
                 }
-                
+
                 Context.Write(output);
             }
             catch (Exception e)
@@ -113,7 +120,7 @@ namespace SisoDb.Management
             {
                 id = Guid.Parse((string)id);
             }
-            
+
             return Configuration.DB.UseOnceTo().GetByIdAsJson(typeMatch.Contract, id);
         }
 
@@ -227,6 +234,27 @@ namespace SisoDb.Management
             return Success;
         }
 
+        private string InitDatabase(bool shouldBuildTables)
+        {
+            if (Configuration.DB.Exists())
+            {
+                Configuration.DB.InitializeExisting();
+            }
+            else
+            {
+                Configuration.DB.CreateIfNotExists();
+            }
+
+            if (shouldBuildTables)
+            {
+                foreach (var item in Configuration.TypeMappings)
+                {
+                    Configuration.DB.UpsertStructureSet(item.Key);       
+                }
+            }
+            return Success;
+        }
+
         private string GetData()
         {
             var assembly = typeof(SisoDbManagementHandler).Assembly;
@@ -234,7 +262,7 @@ namespace SisoDb.Management
             var version = string.Format("{0}.{1}.{2}", v.Major, v.Minor, v.Build);
 
             Context.SetContentType("application/json");
-            return "var data = { \"Version\": \"" + version  + "\", \"Entities\":" + JsonSerializer.SerializeToString(Configuration.TypeMappings.Select(m => m.Value)) + "};";
+            return "var data = { \"Version\": \"" + version + "\", \"Entities\":" + JsonSerializer.SerializeToString(Configuration.TypeMappings.Select(m => m.Value)) + "};";
         }
 
         private QuerySpec GetQuerySpec(TypeMapping typeMapping)
@@ -297,13 +325,13 @@ namespace SisoDb.Management
 
         private static string GetResource(string filename)
         {
-            using (var stream = typeof(SisoDbManagementHandler).Assembly.GetManifestResourceStream("SisoDb.Management." 
-                + (filename.EndsWith(".js") ? "Scripts" : "Templates") +  "." + filename))
+            using (var stream = typeof(SisoDbManagementHandler).Assembly.GetManifestResourceStream("SisoDb.Management."
+                + (filename.EndsWith(".js") ? "Scripts" : "Templates") + "." + filename))
             using (var reader = new StreamReader(stream))
             {
                 return reader.ReadToEnd();
             }
-            
+
         }
 
 

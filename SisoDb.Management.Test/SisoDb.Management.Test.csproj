@@ -75,6 +75,7 @@
     <Compile Include="FakeContextAdapter.cs" />
     <Compile Include="FakeQueryResult.cs" />
     <Compile Include="GetEntityTest.cs" />
+    <Compile Include="InitDatabaseTest.cs" />
     <Compile Include="InsertSchemaTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryTest.cs" />

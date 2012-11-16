@@ -9,6 +9,8 @@
             activeTab: ko.observable(null),
             createTab: createTab,
             tabs: ko.observableArray([]),
+            showingActions : ko.observable(false),
+            systemActions : ko.observableArray(getSystemActions()),
             closeAll: function(){
                 _vm.activeTab(null);
                 _vm.tabs([]);
@@ -53,6 +55,38 @@
         }
 
         ko.applyBindings(_vm);
+    };
+
+    var getSystemActions = function () {
+        var list = [];
+        list.push({
+            label: 'Initialise DB',
+            description: 'Creates the DB if it doesn\'t exist and if it will make sure the the Siso system tables are present.',
+            execute: function () { runParameterLessCommand('initdb'); }
+        });
+
+        list.push({
+            label: 'Initialise DB with structures',
+            description: 'As Initilise DB but also make sure all structures are inserted',
+            execute: function () { runParameterLessCommand('initdbandstructures'); }
+        });
+
+        return list;
+    };
+
+    var runParameterLessCommand = function (actionName) {
+        _vm.showingActions(false);
+        $.ajax({
+            type: 'POST',
+            url: '/siso-db-management/' + actionName,
+            data: {  },
+            success: function () {
+                alert('success');
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert(errorThrown + ':' + xhr.responseText); 
+            }
+        });
     };
 
     var createTab = function () {

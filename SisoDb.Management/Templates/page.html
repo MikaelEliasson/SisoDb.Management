@@ -8,6 +8,15 @@
 </head>
 <body>
     <header class="pageHeader">
+        <div id="systemActionsWrapper">
+        <a href="#" id="systemActionsLink" data-bind="click: function(){ showingActions(!showingActions())}, css : { open : showingActions}">system actions</a>
+        <ul id="systemActionsList" data-bind="foreach : systemActions, visible : showingActions">
+            <li><span class="actionName" data-bind="text : label"></span>
+                <span class="actionDescription" data-bind="text : description"></span>
+                <a class="executeAction" href="#" data-bind="click: execute">execute</a>
+            </li>
+        </ul>
+        </div>
         <hgroup id="title">
             <h1>SisoDb.</h1>
             <h2>Management</h2>
