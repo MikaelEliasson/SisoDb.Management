@@ -42,6 +42,16 @@ You will almost certainly have to add the following to web.config
     </handlers>
 </system.webServer>
 ```
+
+To avoid asp.net request validation firing if you write generics or have html in the json you should also add the follwing to the <configuration> element:
+
+```xml
+  <location path="siso-db-management">
+    <system.web>
+      <httpRuntime requestValidationMode="2.0" />
+    </system.web>
+  </location>
+```
 ##Configuration
 
 You need to add some configuration to your applications startup. For example to Application_Start() in global.asax.cs.
