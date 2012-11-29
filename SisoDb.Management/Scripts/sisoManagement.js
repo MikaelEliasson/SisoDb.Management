@@ -78,7 +78,7 @@
         _vm.showingActions(false);
         $.ajax({
             type: 'POST',
-            url: '/siso-db-management/' + actionName,
+            url: '' + actionName,
             data: {  },
             success: function () {
                 alert('success');
@@ -143,7 +143,6 @@
 
     var storeTabs = function () {
         var tabs = ko.toJSON(_vm.tabs);
-        console.log("storeT");
         try {
             localStorage.setItem('SisoManagement_TabStore', tabs);
         } catch (e) {
@@ -154,7 +153,6 @@
     };
 
     var storeActive = function () {
-        console.log("storeActive");
         var active = (_vm.activeTab() || { id: null }).id;
         try {
             localStorage.setItem('SisoManagement_Active', active);

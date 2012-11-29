@@ -4,7 +4,8 @@
         function Tab(entity, values) {
             /*values should keep the same interface as Tab but not have 
             observable properties. This is primarily to support storing tabs */
-            values = values || {}; 
+            values = values || {};
+            var self = this;
             this.id = Number(values.id || +new Date); //Use a timestamp as id. It will only be used to identify the tab later on
             this.entity = entity;
             this.isLoading = ko.observable(false); 
@@ -82,6 +83,12 @@
                 this.properties.push({ name: property, parts: parts })
 
             }
+
+            this.changePage = function (item) {
+                self.page(item.index);
+
+                self.loadData();
+            };
         }
 
 
@@ -107,7 +114,7 @@
             tab.isLoading(true);
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/regenerateindexes',
+                url: 'regenerateindexes',
                 data: { entityType: this.entity.Contract },
                 success: function () {
                     tab.isLoading(false);
@@ -126,7 +133,7 @@
             tab.isLoading(true);
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/insertschema',
+                url: 'insertschema',
                 data: { entityType: this.entity.Contract },
                 success: function () {
                     tab.isLoading(false);
@@ -146,12 +153,6 @@
             this.loadData();
         };
 
-        Tab.prototype.changePage = function (item) {
-            this.page(item.index);
-
-            this.loadData();
-        }
-
         Tab.prototype.loadData = function () {
             this.isLoading(true);
             this.results([]);
@@ -159,7 +160,7 @@
             var tab = this;
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/query',
+                url: 'query',
                 data: {
                     entityType: this.entity.Contract,
                     setup: this.setupCode(),
@@ -187,7 +188,7 @@
                 var tab = this;
                 makeAjaxCall(tab, {
                     type: 'POST',
-                    url: '/siso-db-management/deletebyquery',
+                    url: 'deletebyquery',
                     data: { entityType: this.entity.Contract, setup: this.setupCode(), predicate: this.predicate() },
                     success: function (number) {
                         tab.isLoading(false);
@@ -208,10 +209,11 @@
             var tab = this;
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/entity',
+                url: 'entity',
                 data: { entityType: this.entity.Contract, entityId: this.entityId() },
                 success: function (json) { //json as text/html
-                    tab.entityJson(json);
+                    var formatedJson = JSON.stringify(JSON.parse(json), null, 4);
+                    tab.entityJson(formatedJson);
                     tab.isLoading(false);
                 },
                 error: tab.onUnexpectedError
@@ -224,7 +226,7 @@
             tab.isLoading(true);
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/delete',
+                url: 'delete',
                 data: { entityType: tab.entity.Contract, entityId: tab.entityId() },
                 success: function (json) {
                     tab.isLoading(false);
@@ -245,7 +247,7 @@
             tab.isLoading(true);
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/update',
+                url: 'update',
                 data: { entityType: this.entity.Contract, entityId: tab.entityId(), modifiedEntity: tab.entityJson() },
                 success: function (json) { //json as text/html
                     tab.isLoading(false);
@@ -265,7 +267,7 @@
             tab.isLoading(true);
             makeAjaxCall(tab, {
                 type: 'POST',
-                url: '/siso-db-management/insert',
+                url: 'insert',
                 data: { entityType: tab.entity.Contract, json: tab.entityJson() },
                 success: function (json) { //json as text/html
                     tab.isLoading(false);

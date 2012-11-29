@@ -14,7 +14,14 @@ namespace SisoDb.Management
 
         internal static IDictionary<Type, TypeMapping> TypeMappings { get; set; }
         public static ISisoDatabase DB;
+        /// <summary>
+        /// Set a callback that is used to authorize if the user can access the management pages. Should return true if the user has access.
+        /// </summary>
         public static Func<string, bool> Authorize;
+        /// <summary>
+        /// Set at which url the management should be hosted. Should end with a trailing slash. Default value =  "siso-db-management/"
+        /// </summary>
+        public static string Prefix = "siso-db-management/";
 
         public static void AddTypeMapping<TInterface, TImplementation>()
             where TInterface : class
@@ -36,11 +43,10 @@ namespace SisoDb.Management
 
             var routes = RouteTable.Routes;
             var handler = new SisoDbManagementHandler();
-            var prefix = "siso-db-management/";
 
             using (routes.GetWriteLock())
             {
-                var route = new Route(prefix + "{filename}", handler)
+                var route = new Route(Prefix + "{filename}", handler)
                 {
                     // we have to specify these, so no MVC route helpers will match, e.g. @Html.ActionLink("Home", "Index", "Home")
                     Defaults = new RouteValueDictionary(new { controller = "SisoDbManagementHandler", action = "ProcessRequest" }),
