@@ -14,7 +14,7 @@
     <tags>c# aspnet aspnetmvc sisodb tools</tags>
 	<dependencies>
 		<dependency id="Mono.CSharp" version="4.0" />
-        <dependency id="SisoDb" version="15.1.0" />
+        <dependency id="SisoDb" version="16.0.0" />
     </dependencies>
   </metadata>
 </package>
