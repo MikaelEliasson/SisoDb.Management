@@ -39,14 +39,17 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\packages\ServiceStack.Text.3.9.27\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
-    <Reference Include="SisoDb">
-      <HintPath>..\packages\SisoDb.15.1.0\lib\net40\SisoDb.dll</HintPath>
+    <Reference Include="SisoDb, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.16.0.0\lib\net40\SisoDb.dll</HintPath>
     </Reference>
-    <Reference Include="SisoDb.Serialization">
-      <HintPath>..\packages\SisoDb.15.1.0\lib\net40\SisoDb.Serialization.dll</HintPath>
+    <Reference Include="SisoDb.Serialization, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.16.0.0\lib\net40\SisoDb.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>

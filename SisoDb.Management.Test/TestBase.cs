@@ -17,8 +17,8 @@ namespace SisoDb.Management.Test
             Configuration.AddTypeMapping<IPerson, Person>();
             Configuration.DB = db;
 
-            Configuration.DB.Settings.AllowUpsertsOfSchemas = true;
-            Configuration.DB.Settings.SynchronizeSchemaChanges = true;
+            Configuration.DB.Settings.AllowDynamicSchemaCreation = true;
+            Configuration.DB.Settings.AllowDynamicSchemaUpdates = true;
 
             Configuration.Authorize = str => true;
 

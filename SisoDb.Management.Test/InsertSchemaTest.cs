@@ -80,8 +80,8 @@ namespace SisoDb.Management.Test
 
             Assert.AreEqual(200, adapter.StatusCode);
 
-            Assert.IsTrue(Configuration.DB.Settings.SynchronizeSchemaChanges);
-            Assert.IsTrue(Configuration.DB.Settings.AllowUpsertsOfSchemas);
+            Assert.IsTrue(Configuration.DB.Settings.AllowDynamicSchemaCreation);
+            Assert.IsTrue(Configuration.DB.Settings.AllowDynamicSchemaUpdates);
         }
 
         [TestMethod]
@@ -107,8 +107,8 @@ namespace SisoDb.Management.Test
 
             Assert.AreEqual(200, adapter.StatusCode);
 
-            Assert.IsFalse(Configuration.DB.Settings.SynchronizeSchemaChanges);
-            Assert.IsFalse(Configuration.DB.Settings.AllowUpsertsOfSchemas);
+            Assert.IsFalse(Configuration.DB.Settings.AllowDynamicSchemaCreation);
+            Assert.IsFalse(Configuration.DB.Settings.AllowDynamicSchemaUpdates);
         }
     }
 }

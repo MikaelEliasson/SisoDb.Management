@@ -43,17 +43,21 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="SisoDb">
-      <HintPath>..\packages\SisoDb.15.1.0\lib\net40\SisoDb.dll</HintPath>
+    <Reference Include="SisoDb, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.16.0.0\lib\net40\SisoDb.dll</HintPath>
     </Reference>
-    <Reference Include="SisoDb.Serialization">
-      <HintPath>..\packages\SisoDb.15.1.0\lib\net40\SisoDb.Serialization.dll</HintPath>
+    <Reference Include="SisoDb.Serialization, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.16.0.0\lib\net40\SisoDb.Serialization.dll</HintPath>
     </Reference>
-    <Reference Include="SisoDb.Sql2008">
-      <HintPath>..\packages\SisoDb.Sql2008.15.1.0\lib\net40\SisoDb.Sql2008.dll</HintPath>
+    <Reference Include="SisoDb.Sql2008, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.SQL2008.16.0.0\lib\net40\SisoDb.Sql2008.dll</HintPath>
     </Reference>
-    <Reference Include="SisoDb.SqlServer">
-      <HintPath>..\packages\SisoDb.Sql2008.15.1.0\lib\net40\SisoDb.SqlServer.dll</HintPath>
+    <Reference Include="SisoDb.SqlServer, Version=16.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SisoDb.SQL2008.16.0.0\lib\net40\SisoDb.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

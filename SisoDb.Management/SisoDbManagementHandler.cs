@@ -224,13 +224,13 @@ namespace SisoDb.Management
             //This whole part is a hack and it only works if no query has been run on the entity earlier as siso cache that.
             //BEtter support for this will have to be added to Siso first
             var settings = Configuration.DB.Settings;
-            var oldAllowUpsertsOfSchemas = settings.AllowUpsertsOfSchemas;
-            var oldSynchronizeSchemaChanges = settings.SynchronizeSchemaChanges;
-            settings.AllowUpsertsOfSchemas = true;
-            settings.SynchronizeSchemaChanges = true;
+            var oldAllowUpsertsOfSchemas = settings.AllowDynamicSchemaCreation;
+            var oldSynchronizeSchemaChanges = settings.AllowDynamicSchemaUpdates;
+            settings.AllowDynamicSchemaCreation = true;
+            settings.AllowDynamicSchemaUpdates = true;
             Configuration.DB.UpsertStructureSet(typeMatch.Contract);
-            settings.AllowUpsertsOfSchemas = oldAllowUpsertsOfSchemas;
-            settings.SynchronizeSchemaChanges = oldSynchronizeSchemaChanges;
+            settings.AllowDynamicSchemaCreation = oldAllowUpsertsOfSchemas;
+            settings.AllowDynamicSchemaUpdates = oldSynchronizeSchemaChanges;
             return Success;
         }
 

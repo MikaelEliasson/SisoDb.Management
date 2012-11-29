@@ -168,7 +168,7 @@ namespace SisoDb.Management
             using (var session = Configuration.DB.BeginSession())
             {
                 var count = Query().Count(pred);
-                session.Advanced.DeleteByQuery<TContract>(pred);
+                session.DeleteByQuery<TContract>(pred);
 
                 return count;
             }
